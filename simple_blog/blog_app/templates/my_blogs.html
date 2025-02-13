@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h2>My Blogs</h2>
+<a href="{% url 'create_blog' %}" class="btn btn-success mb-3">Add New Blog</a>
+
+{% for blog in blogs %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
+        <p class="card-text">{{ blog.content|truncatewords:20 }}</p>
+        <a href="{% url 'edit_blog' blog.id %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'delete_blog'  blog.id %}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+{% empty %}
+<p>You have no blogs yet.</p>
+{% endfor %}
+{% endblock %}
+
+   
+    

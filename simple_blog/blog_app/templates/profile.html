@@ -1,0 +1,123 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<style>
+  .gradient-custom-2 {
+    /* fallback for old browsers */
+    background: #fbc2eb;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
+  }
+  .form-label {
+    display: block;
+    font-weight: bold; /* Optional: Makes the label more visible */
+    color: black;;
+  }
+  
+</style>
+<section class="h-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center">
+      <div class="col col-lg-9 col-xl-8">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                style="width: 150px; z-index: 1">
+              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body"
+                data-mdb-ripple-color="dark" style="z-index: 1;"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Edit profile
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="post"> 
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="{{profile.email}}">
+                          <label for="email">Email address</label>
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputName" class="form-label d-block">First Name :</label>
+                          <input type="text" class="form-control" id="exampleInputName"  name ="first_name" value="{{profile.first_name}}">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputName" class="form-label d-block">Last Name :</label>
+                          <input type="text" class="form-control" id="exampleInputame" name="last_name" value="{{profile.last_name}}">
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="exampleInputPlace" class="form-label d-block">Place :</label>
+                          <input type="text" class="form-control" id="exampleInputPlace" value="{{profile.place}}" name="place">
+                        </div>
+
+                        
+                        <div class="mb-3">
+                          <label for="exampleInputAbout" class="form-label d-block">About :</label>
+                          <textarea class="form-control" id="exampleInputAbout" rows="3" name="about">{{profile.about}}</textarea>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                          <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{profile.password}}">
+                          <label for="password">Password</label>
+                        </div>                       
+                
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submitx" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5>{{profile.first_name}} {{profile.last_name}}</h5>
+              <p>{{profile.place}}</p>
+            </div>
+          </div>
+          <div class="p-4 text-black bg-body-tertiary">
+            <div class="d-flex justify-content-end text-center py-1 text-body">
+              <div>
+                <p class="mb-1 h5">253</p>
+                <p class="small text-muted mb-0">Blogs</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5  text-body">
+              <p class="lead fw-normal mb-1">About</p>
+              <div class="p-4 bg-body-tertiary">
+                <p class="font-italic mb-1">{{profile.about}}</p>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+
+</script>
+
+{% endblock %}
