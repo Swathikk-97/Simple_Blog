@@ -23,7 +23,8 @@ This is a simple blog application built with Django that allows users to registe
 ### Bonus Features (Optional)
 - **Pagination**
   - Displays 3 posts per page on the homepage.
-
+- **Search**
+  - Users can search for blog posts by title or author.
 
 ## Installation & Setup
 ### Prerequisites
