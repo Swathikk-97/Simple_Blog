@@ -1,10 +1,27 @@
+<!-- Extending a Base Template -->
 {% extends 'master.html' %}
 
+<!-- Defining the Content Block -->
 {% block content %}
 
 <h2>All Blogs</h2>
+<header class="py-3 mb-3 border-bottom">
+    <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+    
+      <div class="d-flex align-items-center">
+        <form class="w-100 me-3" role="search" method="GET" action="{% url 'all_blogs' %}">
+            <input type="search" name="q" class="form-control" placeholder="Search by Title or Author..." 
+                   aria-label="Search" value="{{ query }}">
+        </form>
+      </div>
+    </div>
+  </header>
 
+
+<!-- Displaying Blog Posts -->
 {% for blog in blogs %}
+
+<!-- Showing Each Blog as a Card -->
 <div class="card mb-3">
     <div class="card-body">
         <h5 class="card-title"><a href="{% url 'blog_detail'  blog.id %}">{{ blog.title }}</a></h5>
@@ -14,6 +31,7 @@
 {% empty %}
 <p>You have no blogs yet.</p>
 {% endfor %}
+
 <!-- Pagination -->
 <nav>
     <ul class="pagination">

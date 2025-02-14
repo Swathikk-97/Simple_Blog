@@ -12,7 +12,7 @@
 
 <body>
   <div class="signup-page">
-    <form class="form-container" method="POST" action="{% url 'signup' %}">
+    <form class="form-container" method="POST"  enctype="multipart/form-data">
       {% csrf_token %}
       <h1 class="h3 mb-3 fw-normal">Sign up</h1>
 
@@ -40,6 +40,10 @@
         <textarea class="form-control" id="about" name="about" placeholder="About yourself"></textarea>
         <label for="about">About</label>
       </div>
+      <div class="mb-3">
+        <label for="profileImage" class="form-label">Upload Profile Image</label>
+        <input type="file" class="form-control" id="profileImage" name="profile_photo" accept="image/*">
+      </div>      
 
       <div class="form-floating mb-3">
         <input type="password" class="form-control" id="password" name="password" placeholder="Password">

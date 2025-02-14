@@ -12,12 +12,14 @@
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
   }
+
   .form-label {
     display: block;
-    font-weight: bold; /* Optional: Makes the label more visible */
-    color: black;;
+    font-weight: bold;
+    /* Optional: Makes the label more visible */
+    color: black;
+    ;
   }
-  
 </style>
 <section class="h-100 gradient-custom-2">
   <div class="container py-5 h-100">
@@ -26,12 +28,13 @@
         <div class="card">
           <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+              {% if profile.profile_photo %}
+              <img src="{{ profile.profile_photo.url }}" alt="Profile Image" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
-              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body"
-                data-mdb-ripple-color="dark" style="z-index: 1;"
-                data-bs-toggle="modal" data-bs-target="#exampleModal">
+              {% endif %}
+
+              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-light text-dark"
+                data-mdb-ripple-color="dark" style="z-index: 1;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Edit profile
               </button>
 
@@ -45,43 +48,52 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form method="post"> 
+                      <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-floating mb-3">
-                          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="{{profile.email}}">
+                          <input type="email" class="form-control" id="email" name="email"
+                            placeholder="name@example.com" value="{{profile.email}}">
                           <label for="email">Email address</label>
                         </div>
                         <div class="mb-3">
                           <label for="exampleInputName" class="form-label d-block">First Name :</label>
-                          <input type="text" class="form-control" id="exampleInputName"  name ="first_name" value="{{profile.first_name}}">
+                          <input type="text" class="form-control" id="exampleInputName" name="first_name"
+                            value="{{profile.first_name}}">
                         </div>
                         <div class="mb-3">
                           <label for="exampleInputName" class="form-label d-block">Last Name :</label>
-                          <input type="text" class="form-control" id="exampleInputame" name="last_name" value="{{profile.last_name}}">
+                          <input type="text" class="form-control" id="exampleInputame" name="last_name"
+                            value="{{profile.last_name}}">
                         </div>
 
                         <div class="mb-3">
                           <label for="exampleInputPlace" class="form-label d-block">Place :</label>
-                          <input type="text" class="form-control" id="exampleInputPlace" value="{{profile.place}}" name="place">
+                          <input type="text" class="form-control" id="exampleInputPlace" value="{{profile.place}}"
+                            name="place">
                         </div>
 
-                        
                         <div class="mb-3">
                           <label for="exampleInputAbout" class="form-label d-block">About :</label>
-                          <textarea class="form-control" id="exampleInputAbout" rows="3" name="about">{{profile.about}}</textarea>
+                          <textarea class="form-control" id="exampleInputAbout" rows="3"
+                            name="about">{{profile.about}}</textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="profileImage" class="form-label d-block">Upload Profile Image</label>
+                          <input type="file" class="form-control" id="profileImage" name="profile_photo"
+                            accept="image/*" value="profile_photo">
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Password" value="{{profile.password}}">
+                          <label for="password">Password</label>
                         </div>
 
-                        <div class="form-floating mb-3">
-                          <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{profile.password}}">
-                          <label for="password">Password</label>
-                        </div>                       
-                
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submitx" class="btn btn-primary">Save changes</button>
                     </div>
-                  </form>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -97,8 +109,8 @@
           <div class="p-4 text-black bg-body-tertiary">
             <div class="d-flex justify-content-end text-center py-1 text-body">
               <div>
-                <p class="mb-1 h5">253</p>
-                <p class="small text-muted mb-0">Blogs</p>
+                <p class="mb-1 h5"></p>
+                <p class="small text-muted mb-0"></p>
               </div>
             </div>
           </div>
@@ -109,11 +121,11 @@
                 <p class="font-italic mb-1">{{profile.about}}</p>
               </div>
             </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 <script>

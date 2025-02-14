@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import CustomUser,Blog
 from django.core.paginator import Paginator
+from django.db.models import Q
 import os   
 
 
@@ -24,15 +25,22 @@ def register_user(request):
         last_name = request.POST.get('last_name')
         place = request.POST["place"]
         about = request.POST["about"]
+        profile_photo = request.FILES["profile_photo"]
 
-        if not (email and password and first_name and last_name and place and about):
+        if not (email and password and first_name and last_name and place and about and profile_photo):
             return HttpResponse("All fields are required", status=400)
 
         if CustomUser.objects.filter(email=email).exists():
             return HttpResponse("User already exists", status=400)
 
         user = CustomUser.objects.create_user(
-            email=email, password=password, first_name=first_name, last_name=last_name,place = place,about = about
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                place = place,
+                about = about,
+                profile_photo=profile_photo
         )
         return redirect('login')
 
@@ -66,10 +74,29 @@ def profile_view(request):
         last_name = request.POST.get('last_name')
         place = request.POST["place"]
         about = request.POST["about"]
+        image = request.FILES["profile_photo"]
 
-        CustomUser.objects.filter(email=request.user.email).update(
-            email=email, password=password, first_name=first_name, last_name=last_name,place = place,about = about
-        )
+        if image:
+            if profile.profile_photo:  # Delete old image file
+                old_image_path = profile.profile_photo.path
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+
+            profile.profile_photo= image  # Assign new image
+
+        
+        
+
+       
+        profile.email=email
+        profile.password=password
+        profile.first_name=first_name
+        profile.last_name=last_name
+        profile.place = place
+        profile.about = about
+        
+        profile.save()
+        
         return redirect('profile_view')
 
     return render(request, 'profile.html', {'profile': profile})
@@ -90,12 +117,20 @@ def my_blogs(request):
 
 
 def all_blogs(request):
-    blogs=Blog.objects.all()
-    paginator=Paginator(blogs,3)
-    page_number=request.GET.get('page')
-    page_obj=paginator.get_page(page_number)
-    return render(request,"all_blogs.html",{'blogs':page_obj})
+    query = request.GET.get('q', '')  # Get search query from request
+    blogs = Blog.objects.all()
 
+    if query:
+        blogs = blogs.filter(
+            Q(title__icontains=query) |  # Search in blog title
+            Q(author__first_name__icontains=query)  # Search in author's username
+        )
+
+    paginator = Paginator(blogs, 3)  # Paginate with 3 blogs per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "all_blogs.html", {'blogs': page_obj, 'query': query})
 
 
 
@@ -133,7 +168,6 @@ def delete_blog(request,id):
 
 def blog_detail(request,id):
     blog=Blog.objects.get(id=id)
-  
     return render(request,'blog_detail.html',{'blog':blog})
 
 def logout_user(request):

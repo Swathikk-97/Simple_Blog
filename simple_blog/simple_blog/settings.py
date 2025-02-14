@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'simple_blog.urls'
 
 AUTH_USER_MODEL = 'blog_app.CustomUser'
+
 LOGIN_URL = '/login/' 
 
 TEMPLATES = [

@@ -23,6 +23,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50)
     place = models.CharField(max_length=100 ,default='')
     about = models.CharField(max_length=100, default='')
+    profile_photo = models.ImageField(upload_to='profile_photos/',null=True,blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
